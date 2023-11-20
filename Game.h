@@ -69,9 +69,26 @@ public:
 
         setPlayerName();
 
-        cout << "\nnice to meet you " << playerName << ", please enjoy the game!\n" << endl;
+        cout << "\nnice to meet you " << playerName << ", please enjoy the game! but here are the rules first.\n" << endl;
 
-        playGame();
+        cout << "1. you can only guess a word if you type it's full length." << endl;
+        cout << "2. incorrect word guesses don't reveal letters and count as two failed guesses." << endl;
+        cout << "3. have fun!" << endl;
+        string answer;
+
+        while (answer != "y") {
+            cout << "\nare you ready to begin? y/n: ";
+            getline(cin, answer);
+            if (answer == "y") {
+                playGame();
+            } else {
+                cout << "if you would like to quit, type 'quit' or 'y' now: ";
+                getline(cin, answer);
+                if (answer == "quit") {
+                    break;
+                }
+            }
+        }
     }
 
 private:
@@ -122,7 +139,7 @@ private:
                 if (guess.length() == 1) {
                     if (guessLetter(guess[0])) {
                         if (wordCompleted()) {
-                            cout << "you found the word! here are your results!\n" << endl;
+                            cout << "you found the word " << playerName << "! here are your results!\n" << endl;
                             cout << "total guesses = " << to_string(totalGuesses) << endl;
                             cout << "total correct guesses = " << to_string(correctGuesses) << endl;
                             cout << "total incorrect guesses = " << to_string(incorrectGuesses) << endl;
@@ -135,14 +152,14 @@ private:
                                     play = false;
                                     break;
                                 } else if (response == "n") {
-                                    cout << "\n\nthanks for playing! till next time.";
+                                    cout << "\n\nthanks for playing " << playerName << "! till next time.";
                                     play = false;
                                     break;
                                 }
                             }
                             continue;
                         } else {
-                            cout << "good guess! you have found " << printGuessedWord() << endl;
+                            cout << "good guess " << playerName << "! you have found " << printGuessedWord() << endl;
                         }
                     } else {
                         cout << "incorrect guess, you have found " << printGuessedWord() << endl;
@@ -153,7 +170,7 @@ private:
                     usleep(2 * microsecond);
                     continue;
                 } else if (guessWord(guess)) {
-                    cout << "you found the word! here are your results!\n" << endl;
+                    cout << "you found the word" << playerName << "! here are your results!\n" << endl;
                     cout << "total guesses = " << to_string(totalGuesses) << endl;
                     cout << "total correct guesses = " << to_string(correctGuesses) << endl;
                     cout << "total incorrect guesses = " << to_string(incorrectGuesses) << endl;
@@ -167,7 +184,7 @@ private:
                             play = false;
                             break;
                         } else if (response == "n") {
-                            cout << "\n\nthanks for playing! till next time.";
+                            cout << "\n\nthanks for playing " << playerName << "! till next time.";
                             play = false;
                             break;
                         }
@@ -178,7 +195,7 @@ private:
                 }
             }
         } else {
-            cout << "you have completed all the prebuilt words, thanks for playing!" << endl;
+            cout << "you have completed all the prebuilt words, thanks for playing " << playerName << "!" << endl;
             usleep(2 * 1000000);
         }
     }

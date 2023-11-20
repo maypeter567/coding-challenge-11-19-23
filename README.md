@@ -3,14 +3,14 @@ This is a coding challenge for BYU OIT
 
 ## Planning
 ### inputs
-when this program is called, it will ask the player to input their name, which will be used to give feedback on their choices. the game will give a string explaining the rules, which include making single letter guesses, an optional hard mode if implemented, and making full word guesses with drawbacks. if the user wishes to end the game early they can type "quit()" to exit the program.
+when this program is called, it will ask the player to input their name, which will be used to give feedback on their choices. the game will give a string explaining the rules, which include making single letter guesses, an optional hard mode if implemented, and making full word guesses with drawbacks.
 to execute the program, simply call it in the command line and the game will begin. No program arguments are required.
 
 ### structure
 all classes:
 - WordStorage: stores the word and checks if a guess is inside the word.
-- Game: stores the guesses and ensures no repeats.
-- Printer: prints the hangman based on the number of guesses. optional if time permits.
+- Game: stores the guesses and ensures no repeats. the source of all logic behind the code.
+- Printer: prints the hangman based on the number of guesses. if implemented.
 
 ### functions
 #### WordStorage
