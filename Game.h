@@ -9,6 +9,7 @@
 #include <vector>
 #include <unistd.h>
 #include <time.h>
+#include <algorithm>
 #include "Printer.h"
 #include "WordStorage.h"
 
@@ -128,6 +129,7 @@ private:
                         toPrint.erase(toPrint.length() - 2);
                     }
                     cout << "all correct letters: " << toPrint << endl;
+                    sort(incorrectLetters.begin(), incorrectLetters.end());
                     toPrint = "";
                     for (auto c: incorrectLetters) {
                         toPrint.push_back(c);
