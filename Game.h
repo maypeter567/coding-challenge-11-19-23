@@ -7,6 +7,8 @@
 
 #include <iostream>
 #include <vector>
+#include <unistd.h>
+#include <time.h>
 #include "Printer.h"
 #include "WordStorage.h"
 
@@ -14,32 +16,247 @@ using namespace std;
 
 class Game{
 public:
-    Game(){};
+    Game() {
+        playerName = "";
+        totalGuesses = 0;
+        correctGuesses = 0;
+        incorrectGuesses = 0;
+        wordLength = 0;
 
-    void setPlayerName(string setPlayerName) {
-        this->playerName = setPlayerName;
+        preChosenWords.push_back("science");
+        preChosenWords.push_back("apples");
+        preChosenWords.push_back("photosynthesis");
+        preChosenWords.push_back("car");
+        preChosenWords.push_back("democracy");
+        preChosenWords.push_back("canadians");
+        preChosenWords.push_back("dragon");
+        preChosenWords.push_back("axles");
+        preChosenWords.push_back("cartoon");
+        preChosenWords.push_back("jazz");
+    }
+
+    void setPlayerName() {
+        getline(cin, playerName);
     }
 
     bool guessLetter(char letter) {
-        // implement
-        return false;
+        vector<int> indexes = wordStorage.hasLetter(letter);
+        if (indexes.empty()) {
+            wrongGuess(letter);
+            return false;
+        }
+        correctGuess(letter, indexes);
+        return true;
     }
 
     bool guessWord(string word) {
-        // implement
-        return false;
+        if (wordStorage.isWord(word)) {
+            totalGuesses++;
+            correctGuesses++;
+            return true;
+        } else {
+            totalGuesses += 2;
+            incorrectGuesses += 2;
+            return false;
+        }
+    }
+
+    void run() {
+        cout << "Welcome to Hang Man! the classic luck based game of 'can you guess that letter?'\n" << endl;
+        unsigned int microsecond = 1000000;
+        usleep(2 * microsecond);//sleeps for 3 second
+        cout << "lets start with your name, please insert it here and press enter: ";
+
+        setPlayerName();
+
+        cout << "\nnice to meet you " << playerName << ", please enjoy the game!\n" << endl;
+
+        playGame();
     }
 
 private:
+    void playGame() {
+        unsigned int microsecond = 1000000;
+
+        setUpHiddenWord();
+
+        setUpGuessedWord();
+
+        cout << "the length of your word is " << to_string(wordLength) << ". happy guessing!\n" << endl;
+
+        bool play = true;
+        bool firstRound = true;
+
+        while (play) {
+            if (!firstRound) {
+                cout << "total guesses = " << to_string(totalGuesses) << endl;
+                cout << "total correct guesses = " << to_string(correctGuesses) << endl;
+                cout << "total incorrect guesses = " << to_string(incorrectGuesses) << endl;
+                sort(correctLetters.begin(), correctLetters.end());
+                string toPrint;
+                for (auto c: correctLetters) {
+                    toPrint.push_back(c);
+                    toPrint += ", ";
+                }
+                if (!toPrint.empty()) {
+                    toPrint.erase(toPrint.length() - 2);
+                }
+                cout << "all correct letters: " << toPrint << endl;
+                toPrint = "";
+                for (auto c: incorrectLetters) {
+                    toPrint.push_back(c);
+                    toPrint += ", ";
+                }
+                if (!toPrint.empty()) {
+                    toPrint.erase(toPrint.length() - 2);
+                }
+                cout << "all incorrect letters: " << toPrint << endl;
+            } else {
+                firstRound = false;
+            }
+
+            cout << "please enter a single character to guess, or a word if you think you know what it is. press enter after your guess.\n\nguess: ";
+            string guess;
+            getline(cin, guess);
+            if (guess.length() == 1) {
+                if (guessLetter(guess[0])) {
+                    if (wordCompleted()) {
+                        cout << "you found the word! here are your results!\n" << endl;
+                        cout << "total guesses = " << to_string(totalGuesses) << endl;
+                        cout << "total correct guesses = " << to_string(correctGuesses) << endl;
+                        cout << "total incorrect guesses = " << to_string(incorrectGuesses) << endl;
+                        cout << printGuessedWord() << "\n\nwould you like to play again? y/n: ";
+                        string response;
+                        while (true) {
+                            getline(cin, response);
+                            if (response == "y") {
+                                playGame();
+                                play = false;
+                                break;
+                            } else if (response == "n") {
+                                cout << "\n\nthanks for playing! till next time.";
+                                play = false;
+                                break;
+                            }
+                        }
+                        continue;
+                    } else {
+                        cout << "good guess! you have found " << printGuessedWord() << endl;
+                    }
+                } else {
+                    cout << "incorrect guess, you have found " << printGuessedWord() << endl;
+                }
+            } else if (guess.length() != wordLength) {
+                cout << "the word you guessed was not the correct length, it has to be " << to_string(wordLength)
+                     << " characters long." << endl;
+                usleep(2 * microsecond);
+                continue;
+            } else if (guessWord(guess)) {
+                cout << "you found the word! here are your results!\n" << endl;
+                cout << "total guesses = " << to_string(totalGuesses) << endl;
+                cout << "total correct guesses = " << to_string(correctGuesses) << endl;
+                cout << "total incorrect guesses = " << to_string(incorrectGuesses) << endl;
+                cout << printGuessedWord() << "\n\nwould you like to play again? y/n: ";
+                string response;
+                while (true) {
+                    getline(cin, response);
+                    if (response == "y") {
+                        reset();
+                        playGame();
+                        play = false;
+                        break;
+                    } else if (response == "n") {
+                        cout << "\n\nthanks for playing! till next time.";
+                        play = false;
+                        break;
+                    }
+                }
+                continue;
+            } else {
+                cout << "incorrect guess, you still have " << printGuessedWord() << endl;
+            }
+        }
+    }
+
+    void wrongGuess(char letter) {
+        totalGuesses++;
+        incorrectGuesses++;
+        incorrectLetters.push_back(letter);
+    }
+
+    void correctGuess(char letter, vector<int>& indexes) {
+        for (int i : indexes) {
+            guessedWord[i] = letter;
+        }
+        correctGuesses++;
+        correctLetters.push_back(letter);
+    }
+
+    string printGuessedWord() {
+        string toReturn = "";
+        for (auto c : guessedWord) {
+            toReturn += c;
+        }
+        return toReturn;
+    }
+
+    bool wordCompleted() {
+        for (auto c : guessedWord) {
+            if (c == '~') {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    void setUpGuessedWord() {
+        guessedWord.clear();
+        int i = 0;
+        while (i < wordLength) {
+            guessedWord.push_back('~');
+            i++;
+        }
+    }
+
+    void setUpHiddenWord() {
+        srand(time(0));
+        int random_integer = 1 + rand() % preChosenWords.size();
+        wordLength = preChosenWords[random_integer].size();
+        wordStorage.setWord(preChosenWords[random_integer]);
+        int i = 0;
+        for (auto c = preChosenWords.begin(); c < preChosenWords.end(); c++) {
+            if (i == random_integer) {
+                preChosenWords.erase(c);
+                break;
+            }
+            i++;
+        }
+    }
+
+    void reset() {
+        totalGuesses = 0;
+        correctGuesses = 0;
+        incorrectGuesses = 0;
+        incorrectLetters.clear();
+        correctLetters.clear();
+        guessedWord.clear();
+    }
+
     string playerName;
+
     int totalGuesses;
     int correctGuesses;
     int incorrectGuesses;
+    int wordLength;
+
     vector<char> incorrectLetters;
     vector<char> correctLetters;
     vector<char> guessedWord;
+
     Printer printer;
     WordStorage wordStorage;
+
+    vector<string> preChosenWords;
 };
 
 #endif //CODING_CHALLENGE_11_19_23_GAME_H

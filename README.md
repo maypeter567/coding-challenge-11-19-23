@@ -20,9 +20,11 @@ all classes:
 
 #### Game
 - run: void function that loops through the game and calls the functions while interacting with the classes.
-- setPlayerName: a void function that takes a string for the players name when the program starts up.
+- setPlayerName: a void function that calls getline for the user to input their name when the program starts up.
 - guessLetter: takes any inputs from the user and passes it into WordStorage
 - guessWord: -optional- if time permits, allow the player to guess the word. counts as two incorrect guesses and doesn't reveal letters if incorrect
+- wrongGuess: increments incorrectGuesses and totalGuesses while storing the wrong guess in incorrectLetters
+- correctGuess: increments correctGuesses and totalGuesses while storing the correct guess in correctLetters. The function also updates guessed word with the letter guessed.
 
 #### Printer
 - printHangMan: prints the hang man based on how many incorrect guesses are passed in

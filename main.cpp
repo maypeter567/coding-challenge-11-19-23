@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include "Game.h"
 
 using namespace std;
 
@@ -11,6 +12,7 @@ int main(int argc, char* argv[]) {
         cerr << "Usage: " << argv[0] << " doesn't take inputs";
         return 1;
     }
-
-
+    Game game;
+    game.run();
+    return 0;
 }

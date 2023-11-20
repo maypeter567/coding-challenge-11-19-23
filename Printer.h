@@ -12,6 +12,6 @@ public:
     void printHangMan() {
         // implement
     }
-}
+};
 
 #endif //CODING_CHALLENGE_11_19_23_PRINTER_H

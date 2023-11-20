@@ -11,9 +11,12 @@ using namespace std;
 
 class WordStorage{
 public:
-    WordStorage(){}
+    WordStorage(){
+        word = "";
+    }
 
     void setWord(string setWord) {
+        word.clear();
         for (char c : setWord) {
             this->word.push_back(c);
         }
@@ -21,21 +24,23 @@ public:
 
     vector<int> hasLetter(char letter) {
         vector<int> indexes;
+        int i = 0;
         for (char c : word) {
             if (c == letter) {
-                indexes.push_back(c);
+                indexes.push_back(i);
             }
+            i++;
         }
         return indexes;
     }
 
     bool isWord(string guessWord) {
-        // implement
-        return false;
+        return guessWord == word;
     }
 
 private:
-    vector<char> word;
+    vector<char> wordVector;
+    string word;
 };
 
 #endif //CODING_CHALLENGE_11_19_23_WORDSTORAGE_H
