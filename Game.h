@@ -39,6 +39,7 @@ public:
         getline(cin, playerName);
     }
 
+    // guessLetter: takes any inputs from the user and passes it into WordStorage.
     bool guessLetter(char letter) {
         vector<int> indexes = wordStorage.hasLetter(letter);
         if (indexes.empty()) {
@@ -49,6 +50,7 @@ public:
         return true;
     }
 
+    //guessWord: allow the player to guess the word. counts as two incorrect guesses and doesn't reveal letters if incorrect.
     bool guessWord(string word) {
         if (wordStorage.isWord(word)) {
             totalGuesses++;
@@ -61,6 +63,7 @@ public:
         }
     }
 
+    // run: void function that calls playGame, starts the game.
     void run() {
         cout << "Welcome to Hang Man! the classic luck based game of 'can you guess that letter?'\n" << endl;
         unsigned int microsecond = 1000000;
@@ -68,6 +71,10 @@ public:
         cout << "lets start with your name, please insert it here and press enter: ";
 
         setPlayerName();
+
+        if (playerName.empty()) {
+            playerName = "Guest";
+        }
 
         cout << "\nnice to meet you " << playerName << ", please enjoy the game! but here are the rules first.\n" << endl;
 
@@ -84,7 +91,8 @@ public:
             } else {
                 cout << "if you would like to quit, type 'quit' or 'y' now: ";
                 getline(cin, answer);
-                if (answer == "quit") {
+                if (answer == "quit" || answer == "y") {
+                    cout << "\nit was nice to meet you " << playerName << ". please come again!" << endl;
                     break;
                 }
             }
@@ -92,6 +100,7 @@ public:
     }
 
 private:
+    // playGame: runs all the logic of the game, calling functions and recursion as needed.
     void playGame() {
         if (preChosenWords.size() != 0) {
             unsigned int microsecond = 1000000;
