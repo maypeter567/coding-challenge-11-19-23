@@ -4,12 +4,13 @@
 
 #include <iostream>
 
+using namespace std;
+
 int main(int argc, char* argv[]) {
-    std::string test = argv[1];
-    if (argc == 2) {
-        if ("test" == test) {
-            std::cout << "it worked" << std::endl;
-            return 0;
-        }
+    if (argc >= 2) {
+        cerr << "Usage: " << argv[0] << " doesn't take inputs";
+        return 1;
     }
+
+
 }
