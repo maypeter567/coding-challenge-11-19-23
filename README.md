@@ -1,5 +1,5 @@
 # coding-challenge-11-19-23
-This is a coding challenge for BYU OIT.
+This is a coding challenge for BYU OIT. time took = 3 hours 55 minutes.
 
 an executable called **_hangMan_** is in the project for executing the code immediately.
 
