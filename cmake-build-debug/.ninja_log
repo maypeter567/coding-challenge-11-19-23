@@ -1,0 +1,10 @@
+# ninja log v5
+283	311	1700447580085714804	coding_challenge_11_19_23	3b58ef4dbde1e746
+0	281	1700447580054324794	CMakeFiles/coding_challenge_11_19_23.dir/main.cpp.o	f0dfe045ff0be2a0
+0	40	1700447626081332540	build.ninja	3667c9f56539f540
+2	255	1700447698869312892	CMakeFiles/coding_challenge_11_19_23.dir/main.cpp.o	f0dfe045ff0be2a0
+255	284	1700447698900382946	coding_challenge_11_19_23	3b58ef4dbde1e746
+2	247	1700447888271391763	CMakeFiles/coding_challenge_11_19_23.dir/main.cpp.o	f0dfe045ff0be2a0
+247	274	1700447888300100790	coding_challenge_11_19_23	3b58ef4dbde1e746
+1	280	1700447910456555980	CMakeFiles/coding_challenge_11_19_23.dir/main.cpp.o	f0dfe045ff0be2a0
+280	312	1700447910490604519	coding_challenge_11_19_23	3b58ef4dbde1e746
